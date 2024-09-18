@@ -2,6 +2,8 @@
 #include "user.h"
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
 
 // Initialize the static instance
 CarpoolManager* CarpoolManager::instance = nullptr;
@@ -16,12 +18,12 @@ CarpoolManager* CarpoolManager::getInstance() {
 
 // Add a carpool to the listings
 void CarpoolManager::addCarpool(Carpool* carpool) {
-    carpoolListings.push_back(carpool);
+    this->carpoolListings.push_back(carpool);  // Use this->carpoolListings
 }
 
 // Get reference to the carpool listings
 std::vector<Carpool*>& CarpoolManager::getCarpoolListings() {
-    return carpoolListings;
+    return this->carpoolListings;  // Use this->carpoolListings
 }
 
 // Search and book a carpool
@@ -35,7 +37,7 @@ void CarpoolManager::searchAndBookCarpool(User& user) {
     std::getline(std::cin, date);
 
     std::vector<Carpool*> matchingCarpools;
-    for (Carpool* carpool : carpoolListings) {
+    for (Carpool* carpool : this->carpoolListings) {
         // Skip the user's own carpool
         if (carpool->getDriverUsername() == user.getFullName()) {
             continue;
@@ -85,10 +87,9 @@ void CarpoolManager::searchAndBookCarpool(User& user) {
     }
 }
 
-
 // Unlist a carpool
 bool CarpoolManager::unlistCarpool(User& user) {
-    for (Carpool* carpool : carpoolListings) {
+    for (Carpool* carpool : this->carpoolListings) {
         if (carpool->getDriverUsername() == user.getFullName()) {
             if (carpool->getAvailableSeats() == 0 || carpool->bookings.size() > 0) {
                 std::cout << "You cannot unlist this carpool because some seats have been booked.\n";
@@ -96,7 +97,10 @@ bool CarpoolManager::unlistCarpool(User& user) {
             }
 
             // Remove the carpool from the listings
-            carpoolListings.erase(std::remove(carpoolListings.begin(), carpoolListings.end(), carpool), carpoolListings.end());
+            this->carpoolListings.erase(
+                std::remove(this->carpoolListings.begin(), this->carpoolListings.end(), carpool),
+                this->carpoolListings.end()
+            );
             std::cout << "Carpool unlisted successfully.\n";
             return true;
         }
@@ -104,4 +108,61 @@ bool CarpoolManager::unlistCarpool(User& user) {
 
     std::cout << "You have no carpool listings to unlist.\n";
     return false;
+}
+
+//load premade carpool from carpool.txt for teesting purposes
+void CarpoolManager::loadCarpoolsFromFile() {
+    std::ifstream infile("carpool.txt");
+
+    if (!infile.is_open()) {
+        std::cout << "No pre-made carpool listings found (carpool.txt not found).\n";
+        return;
+    }
+
+    std::string line;
+    int loadedCount = 0;
+
+    // Clear existing carpool listings to avoid duplication
+    carpoolListings.clear();  
+
+    while (std::getline(infile, line)) {
+        std::stringstream ss(line);
+        std::string driverUsername, departure, destination, date, model, color, plate;
+        int seats = 0, contribution = 0;
+
+        // Read carpool details from file
+        std::getline(ss, driverUsername, ',');
+        std::getline(ss, departure, ',');
+        std::getline(ss, destination, ',');
+        std::getline(ss, date, ',');
+        std::getline(ss, model, ',');
+        std::getline(ss, color, ',');
+        std::getline(ss, plate, ',');
+
+        if (!(ss >> seats)) {
+            std::cout << "Error: Failed to parse seats. Skipping line.\n";
+            continue;
+        }
+
+        if (ss.peek() == ',') {
+            ss.ignore();
+        }
+
+        if (!(ss >> contribution)) {
+            std::cout << "Error: Failed to parse contribution. Skipping line.\n";
+            continue;
+        }
+
+        // Create new carpool using the preloadCarpool method
+        Carpool* carpool = new Carpool();
+        carpool->preloadCarpool(driverUsername, departure, destination, date, model, color, plate, seats, contribution);
+
+        // Add the carpool to the CarpoolManager
+        this->addCarpool(carpool);
+        loadedCount++;
+    }
+
+    infile.close();
+
+    std::cout << "Pre-made carpools loaded from carpool.txt: " << loadedCount << "\n";
 }

@@ -77,3 +77,17 @@ bool Carpool::addBooking(const std::string& passengerUsername) {
         return false;
     }
 }
+
+void Carpool::preloadCarpool(const std::string& driverUsername, const std::string& departure, const std::string& destination,
+                             const std::string& date, const std::string& model, const std::string& color, const std::string& plate, 
+                             int seats, int contribution) {
+    this->driverUsername = driverUsername;
+    this->departureLocation = departure;
+    this->destinationLocation = destination;
+    this->date = date;
+    this->vehicleModel = model;
+    this->vehicleColor = color;
+    this->vehiclePlateNumber = plate;
+    this->availableSeats = seats;
+    this->contributionAmount = contribution;
+}

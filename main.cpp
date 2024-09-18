@@ -45,7 +45,10 @@ int main() {
                     cout << "Invalid choice. Please try again.\n";
             }
         } else {
+            cout << "User is logged in.\n";  // Debugging output
             CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+            // Load pre-made carpools from carpool.txt
+            carpoolManager->loadCarpoolsFromFile();
 
             cout << "\n--- Carpooling Application (Logged in as " << user.getFullName() << ") ---\n";
             cout << "1. View your profile\n";
@@ -73,6 +76,7 @@ int main() {
                         Carpool* newCarpool = new Carpool();
                         newCarpool->createCarpool(user.getFullName());
                         carpoolManager->addCarpool(newCarpool);  // Add carpool to the manager
+                        cout << "Carpool created successfully!\n";
                     }
                     break;
 
