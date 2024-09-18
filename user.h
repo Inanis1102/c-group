@@ -41,11 +41,16 @@ public:
     // View the user's profile
     void viewProfile();
 
-    // Update the user's profile
+    // Update the user's profile (excluding password)
     void updateProfile();
+
+    // Update the user's password
+    void updatePassword();
 
     // Purchase additional credit points
     void purchaseCredits(int amount);
+
+    std::string getFullName() const {return fullName;}
 };
 
 #endif // USER_H
