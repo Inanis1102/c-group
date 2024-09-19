@@ -18,7 +18,8 @@ int main() {
             cout << "\n--- Carpooling Application ---\n";
             cout << "1. Register as a new user\n";
             cout << "2. Login\n";
-            cout << "3. Exit\n";
+            cout << "3. Search for carpool\n";
+            cout << "4. Exit\n";
             cout << "Enter your choice: ";
             cin >> choice;
             cin.ignore();  // Clear the input buffer
@@ -36,8 +37,15 @@ int main() {
 
                     isLoggedIn = user.login(username, password);
                     break;
+                
+                case 3:{
+                    CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+                    carpoolManager->loadCarpoolsFromFile();  // Load carpools from file
+                    carpoolManager->searchAndBookCarpool(user);  // Call searchAndBookCarpool for non-logged-in users
+                    break;
+                }
 
-                case 3:
+                case 4:
                     cout << "Exiting...\n";
                     return 0;
 
@@ -45,7 +53,6 @@ int main() {
                     cout << "Invalid choice. Please try again.\n";
             }
         } else {
-            cout << "User is logged in.\n";  // Debugging output
             CarpoolManager* carpoolManager = CarpoolManager::getInstance();
             // Load pre-made carpools from carpool.txt
             carpoolManager->loadCarpoolsFromFile();

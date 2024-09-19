@@ -5,7 +5,7 @@
 #include <string>
 
 // Constructor
-User::User() : creditPoints(0), ratingScore(-1), isVerified(false) {}
+User::User() : creditPoints(0), ratingScore(-1), loggedIn(false) {}
 
 // Validate the password based on a simple policy
 bool User::isValidPassword(const std::string& password) {
@@ -20,6 +20,16 @@ bool User::isValidPassword(const std::string& password) {
     }
 
     return hasDigit && hasUpper && hasLower;
+}
+
+// Method to add credits
+void User::addCreditPoints(int points) {
+    creditPoints += points;
+}
+
+// Method to deduct credits
+void User::deductCreditPoints(int points) {
+    creditPoints -= points;
 }
 
 // Helper function to trim leading and trailing spaces
@@ -78,6 +88,7 @@ bool User::login(const std::string& enteredUsername, const std::string& enteredP
 
     if (!inFile) {
         std::cerr << "Error opening file for reading.\n";
+        loggedIn = false;
         return false;
     }
 
@@ -93,16 +104,34 @@ bool User::login(const std::string& enteredUsername, const std::string& enteredP
             std::getline(ss, email, ',');
             std::getline(ss, idType, ',');
             std::getline(ss, idNumber, ',');
-            ss >> creditPoints >> ratingScore >> isVerified;
+            // Handle numeric values with ss.peek()
+            if (!(ss >> creditPoints)) {
+                std::cerr << "Error reading creditPoints for user: " << username << "\n";
+                continue;
+            }
+            if (ss.peek() == ',') ss.ignore();  // Ignore extra comma after creditPoints
+
+            if (!(ss >> ratingScore)) {
+                std::cerr << "Error reading ratingScore for user: " << username << "\n";
+                continue;
+            }
+            if (ss.peek() == ',') ss.ignore();  // Ignore extra comma after ratingScore
+
+            if (!(ss >> ratingCount)) {
+                std::cerr << "Error reading ratingCount for user: " << username << "\n";
+                continue;
+            }
 
             username = fileUsername;
             password = filePassword;
             std::cout << "Login successful!\n";
-            return true;
+            loggedIn = true;
+            return true;  // Set loggedIn to true upon successful login
         }
     }
 
     std::cout << "Login failed. Incorrect username or password.\n";
+    loggedIn = false;  // Set loggedIn to false upon failed login
     return false;
 }
 
@@ -112,7 +141,7 @@ void User::saveUserData() {
 
     if (outFile.is_open()) {
         outFile << username << "," << password << "," << fullName << "," << phoneNumber << ","
-                << email << "," << idType << "," << idNumber << "," << creditPoints << "," << ratingScore << "," << isVerified << "\n";
+                << email << "," << idType << "," << idNumber << "," << creditPoints << "," << ratingScore << "," << ratingCount << "\n";  // Do not save loggedIn status
         outFile.close();
         std::cout << "User data saved successfully.\n";
     } else {
@@ -130,9 +159,10 @@ void User::viewProfile() {
     std::cout << "ID Type: " << idType << "\n";
     std::cout << "ID Number: " << idNumber << "\n";
     std::cout << "Credit Points: " << creditPoints << "\n";
-    std::cout << "Rating Score: " << (ratingScore == -1 ? "N/A" : std::to_string(ratingScore)) << "\n";
-    std::cout << "Verified: " << (isVerified ? "Yes" : "No") << "\n";
+    std::cout << "Driver Rating: " << (ratingCount == 0 ? "N/A" : std::to_string(ratingScore)) 
+              << " (based on " << ratingCount << " ratings)\n";
 }
+
 
 // Full update method for the user's profile (excluding password and username)
 void User::updateProfile() {
@@ -191,3 +221,17 @@ void User::updatePassword() {
         }
     }
 }
+void User::addDriverRating(int rating) {
+    if (rating >= 1 && rating <= 5) {
+        // Update the average rating using the formula
+        ratingScore = (ratingScore * ratingCount + rating) / (ratingCount + 1);
+        ratingCount++;  // Increment the number of ratings
+
+        // Debugging print statement to verify the rating update
+        std::cout << "New rating score: " << ratingScore << " based on " << ratingCount << " ratings.\n";
+    } else {
+        std::cerr << "Invalid rating! Please provide a rating between 1 and 5.\n";
+    }
+}
+
+

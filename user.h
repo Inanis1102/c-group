@@ -14,7 +14,8 @@ private:
     std::string idNumber;
     int creditPoints;
     float ratingScore;
-    bool isVerified;
+    int ratingCount;
+    bool loggedIn;
 
     bool isValidPassword(const std::string& password);  // Check if password meets the required policy
     std::string trimSpaces(const std::string& str);     // Trim spaces from input
@@ -31,6 +32,10 @@ public:
     std::string getEmail() const { return email; }
     std::string getIdType() const { return idType; }
     std::string getIdNumber() const { return idNumber; }
+    int getCreditPoints() const { return creditPoints; }     
+    float getRatingScore() const { return ratingScore; }
+    int getRatingCount() const { return ratingCount; }     
+    bool isLoggedIn() const { return loggedIn; }             
 
     // Setters
     void setFullName(const std::string& name) { fullName = name; }
@@ -40,6 +45,10 @@ public:
     void setEmail(const std::string& mail) { email = mail; }
     void setIdType(const std::string& type) { idType = type; }
     void setIdNumber(const std::string& id) { idNumber = id; }
+    void setCreditPoints(int points) { creditPoints = points; }     
+    void setRatingScore(float score) { ratingScore = score; } 
+    void setRatingCount(int count) { ratingCount = count; }      
+    void setLoggedIn(bool status) { loggedIn = status; }            
 
     //Core methods
     bool login(const std::string& user, const std::string& pass);
@@ -48,6 +57,9 @@ public:
     void updatePassword(); 
     void viewProfile();
     void saveUserData();
+    void addDriverRating(int rating);
+    void addCreditPoints(int points); 
+    void deductCreditPoints(int points); 
 };
 
 #endif // USER_H

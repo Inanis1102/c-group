@@ -1,4 +1,3 @@
-
-kimngan215,21051998Tdkn,Tran Do Kim Ngan,0353983689,trandokimngan215@gmail.com,ID,082098000121,10,-1,0
-daicadg48,10021998Dtlt,Duong Tran Le Truong,0939639953,daicadg48@gmail.com,ID,082098000099,10,-1,0
-dtl102,Dolinh2005,Do Thi Thuy Linh,0978953439,dtl2005@gmail.com,ID,082098098029,10,-1,0
+kimngan215,21051998Tdkn,Tran Do Kim Ngan,0353983689,trandokimngan215@gmail.com,ID,082098000121,10,4.0,9
+daicadg48,10021998Dtlt,Duong Tran Le Truong,0939639953,daicadg48@gmail.com,ID,082098000099,10,3.5,7
+dtl102,Dolinh2005,Do Thi Thuy Linh,0978953439,dtl2005@gmail.com,ID,082098098029,10,2,10
