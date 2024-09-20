@@ -8,8 +8,13 @@ Booking::Booking(const std::string& passengerUsername, Carpool* carpool)
 
 // Accept the booking
 void Booking::acceptBooking() {
-    isAccepted = true;
-    std::cout << "Booking accepted.\n";
+    if (bookedCarpool->getAvailableSeats() > 0){
+        isAccepted = true;
+        bookedCarpool->setAvailableSeats(bookedCarpool->getAvailableSeats() - 1); //reduce available seats
+        std::cout << "Booking accepted.\n";
+    } else {
+        std::cout << "Booking cannot be acepted. No available seats.\n";
+    }
 }
 
 // Cancel the booking (if not yet accepted)
