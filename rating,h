@@ -5,7 +5,7 @@
 
 class Rating {
 private:
-    std::string personName; // Name of passenger or driver (The one being rated)
+    std::string name; // Name of passenger or driver (The one being rated)
     int rating;             // Rating
     std::string review;      // Review
 
