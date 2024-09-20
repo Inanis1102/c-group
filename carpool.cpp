@@ -38,15 +38,20 @@ void Carpool::createCarpool(const std::string& driverUsername) {
     std::cout << "Carpool created successfully!\n";
 
     // Write the carpool details to carpool.txt
+    saveCarpoolToFile();    
+}
+
+//Save carpool to File
+void Carpool::saveCarpoolToFile() const {
     std::ofstream outfile("carpool.txt", std::ios::app);
-    if (outfile.is_open()) {
-        outfile << driverUsername << "," << departureLocation << "," << destinationLocation << "," << date << ","
-                << vehicleModel << "," << vehicleColor << "," << vehiclePlateNumber << "," << availableSeats << ","
-                << contributionAmount << "," << currentRating << "," << ratingCount << "\n";  // Include rating details
-        outfile.close();
-        std::cout << "Carpool details saved to carpool.txt.\n";
-    } else {
-        std::cerr << "Error opening carpool.txt for writing.\n";
+        if (outfile.is_open()) {
+            outfile << driverUsername << "," << departureLocation << "," << destinationLocation << "," << date << ","
+                    << vehicleModel << "," << vehicleColor << "," << vehiclePlateNumber << "," << availableSeats << ","
+                    << contributionAmount << "," << currentRating << "," << ratingCount << "\n";  // Include rating details
+            outfile.close();
+            std::cout << "Carpool details saved to carpool.txt.\n";
+        } else {
+            std::cerr << "Error opening carpool.txt for writing.\n";
     }
 }
 
@@ -63,6 +68,38 @@ void Carpool::displayCarpoolDetails() const {
     std::cout << "Available Seats: " << availableSeats << "\n";
     std::cout << "Contribution per Passenger: " << contributionAmount << " credit points\n";
     std::cout << "Current Rating: " << currentRating << " (based on " << ratingCount << " ratings)\n";  // Show ratings
+}
+
+//Load carpool from carpool.txt
+bool Carpool::loadCarpoolsFromFile() {
+    std::ifstream infile("carpool.txt");
+    if (!infile.is_open()) {
+        std::cerr << "Error opening carpool.txt for reading.\n";
+        return false;
+    }
+
+    std::string line;
+    while (std::getline(infile, line)) {
+        std::istringstream ss(line);
+        std::string driverUsername, departure, destination, date, model, color, plate;
+        int seats, contribution, ratingCount;
+        double rating;
+    
+        std::getline(ss, driverUsername, ",");
+        std::getline(ss, departure, ",");
+        std::getline(ss, destination, ",");
+        std::getline(ss, date, ",");
+        std::getline(ss, model, ",");
+        std::getline(ss, color, ",");
+        std::getline(ss, plate, ",");
+        ss >> seats >> contribution >> rating >> ratingCount;
+    
+        preloadCarpool(driverUsername, departure, destination, date, model, color, plate, seats, contribution, rating, ratingCount);
+    }
+
+    infile.close();
+    std::cout << "Carpools loaded from carpool.txt successfully.\n"
+    return true;
 }
 
 // Add a booking to the carpool
