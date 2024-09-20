@@ -2,6 +2,7 @@
 #include "user.h"
 #include "carpool_manager.h"
 #include "booking.h"
+#include "rating.h"
 #include <iostream>
 #include <vector>
 
