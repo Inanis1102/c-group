@@ -23,7 +23,8 @@ public:
     std::vector<Booking*> bookings;  // Store bookings
 
     // Constructor
-    Carpool();
+    Carpool(std::string driver = "", std::string depLoc = "", std:: string desLoc = "", std::string date = "", std::string vModel = "", std::string vColor = "", std::string vPlateNum = "", int seats = 0, int contriAm = 0, double curRating = 0.0, int ratingCount = 0)
+        :driverUsername(driver), departureLocation(depLoc), destinationLocation(destLoc), date(date), vehicleModel(vModel), vehicleColor(vColor), vehiclePlateNumber(vPlateNum), availableSeats(seats), contributionAmount(contriAm), currentRating(curRating), ratingCount(ratingCount){};
 
     // Create a new carpool listing
     void createCarpool(const std::string& driverUsername);
@@ -65,8 +66,8 @@ public:
     void setVehiclePlateNumber(const std::string& plateNumber) { vehiclePlateNumber = plateNumber; }
     void setAvailableSeats(int seats) { availableSeats = seats; }
     void setContributionAmount(int amount) { contributionAmount = amount; }
-    double setCurrentRating(double rating) { currentRating=rating; }
-    int setRatingCount(int ratingCount) { ratingCount=ratingCount; }
+    void setCurrentRating(double rating) { currentRating=rating; }
+    void setRatingCount(int ratingCount) { ratingCount=ratingCount; }
 };
 
 #endif // CARPOOL_H
