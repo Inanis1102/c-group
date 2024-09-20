@@ -14,10 +14,19 @@ private:
 
 public:
     // Constructor
-    Booking(const std::string& passengerUsername, Carpool* carpool);
+    Booking(const std::string& passengerUsername, Carpool* carpool, bool isAccepted)
+            : passengerUsername(passengerUsername), carpool(carpool), isAccepted(false){}
 
     // Accept or reject the booking
-    void acceptBooking();
+    void acceptBooking()
+{
+    if (isAccepted == false){
+        isAccepted = true;
+        cout << "You have successfully accepted this passenger."
+    } else {
+        cout << "You have already accepted this passenger."
+    }
+};
     void cancelBooking();
 
     // Display booking details
