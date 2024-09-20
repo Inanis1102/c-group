@@ -20,7 +20,7 @@ std::string Rating::getReview() const {
 
 // Setters
 void Rating::setMemberName(const std::string& personName) {
-    this->name = personName;
+    this->name = name;
 }
 
 void Rating::setRating(int rating) {
