@@ -23,9 +23,7 @@ public:
     std::vector<Booking*> bookings;  // Store bookings
 
     // Constructor
-    Carpool(std::string driver = "", std::string depLoc = "", std:: string desLoc = "", std::string date = "", std::string vModel = "", std::string vColor = "", std::string vPlateNum = "", int seats = 0, int contriAm = 0, double curRating = 0.0, int ratingCount = 0)
-        :driverUsername(driver), departureLocation(depLoc), destinationLocation(destLoc), date(date), vehicleModel(vModel), vehicleColor(vColor), vehiclePlateNumber(vPlateNum), availableSeats(seats), contributionAmount(contriAm), currentRating(curRating), ratingCount(ratingCount){};
-
+    Carpool() : availableSeats(0), contributionAmount(0), currentRating(0.0), ratingCount(0) {};
     // Create a new carpool listing
     void createCarpool(const std::string& driverUsername);
 
