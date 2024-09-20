@@ -11,6 +11,7 @@ private:
     std::vector<Carpool*> carpoolListings;  // Carpool listings
     std::vector<User*> users;
 
+    CarpoolManager() {}
 public:
     // Public static method to access the singleton instance
     static CarpoolManager* getInstance();
@@ -37,6 +38,8 @@ public:
     void loadUsersFromFile();
 
     std::string trimSpaces(const std::string& str);
+
+    std::vector<User*>& getUserList(); 
 };
 
 #endif // CARPOOL_MANAGER_H

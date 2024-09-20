@@ -16,6 +16,7 @@ private:
     float ratingScore;
     int ratingCount;
     bool loggedIn;
+    bool isAdmin;
 
     bool isValidPassword(const std::string& password);  // Check if password meets the required policy
     std::string trimSpaces(const std::string& str);     // Trim spaces from input
@@ -60,6 +61,8 @@ public:
     void addDriverRating(int rating);
     void addCreditPoints(int points); 
     void deductCreditPoints(int points); 
+    void viewAllUsers();
+    void removeUser();
 };
 
 #endif // USER_H

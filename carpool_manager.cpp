@@ -26,6 +26,10 @@ std::vector<Carpool*>& CarpoolManager::getCarpoolListings() {
     return this->carpoolListings;  // Use this->carpoolListings
 }
 
+std::vector<User*>& CarpoolManager::getUserList() {
+    return users;
+}
+
 // Search and book a carpool
 void CarpoolManager::searchAndBookCarpool(User& user) {
     std::string departure, destination, date;
@@ -261,9 +265,19 @@ User* CarpoolManager::getDriverFullName(const std::string& fullName) {
     return nullptr;
 }
 
+// Define trimSpaces as a member function of CarpoolManager
+std::string CarpoolManager::trimSpaces(const std::string& str) {
+    size_t first = str.find_first_not_of(' ');
+    if (first == std::string::npos)
+        return "";  // String is all spaces
+    size_t last = str.find_last_not_of(' ');
+    return str.substr(first, last - first + 1);
+}
 
-// method to load users from file for searching
 void CarpoolManager::loadUsersFromFile() {
+
+    users.clear();
+
     std::ifstream inFile("users.txt");
     if (!inFile.is_open()) {
         std::cerr << "Could not open users.txt file.\n";
@@ -322,15 +336,4 @@ void CarpoolManager::loadUsersFromFile() {
     }
 
     inFile.close();
-    std::cout << "Users loaded from users.txt.\n";
 }
-
-// Define trimSpaces as a member function of CarpoolManager
-std::string CarpoolManager::trimSpaces(const std::string& str) {
-    size_t first = str.find_first_not_of(' ');
-    if (first == std::string::npos)
-        return "";  // String is all spaces
-    size_t last = str.find_last_not_of(' ');
-    return str.substr(first, last - first + 1);
-}
-

@@ -2,18 +2,62 @@
 #include "user.h"
 #include "carpool_manager.h"
 #include "booking.h"
-#include "rating.h"
 #include <iostream>
 #include <vector>
+#include <cstdlib> 
 
 using namespace std;
+ 
+void viewAllUsers();    
+void viewAllCarpools(); 
+void removeUser();      
+void removeCarpool();
+void mainMenu();
 
-int main() {
-    User user;
-    int choice;
-    bool isLoggedIn = false;
-    string username, password;
+User user;
+int choice;
+bool isLoggedIn = false;
+string username, password;
+std::string adminUsername = "admin"; //admin login info for testing
+std::string adminPassword = "admin";
 
+void showAdminMenu() {
+    int adminChoice;
+    while (true) {
+        std::cout << "\n--- Admin Menu ---\n";
+        std::cout << "1. View all users\n";
+        std::cout << "2. View all carpools\n";
+        std::cout << "3. Remove a user\n";
+        std::cout << "4. Remove a carpool\n";
+        std::cout << "5. Logout\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> adminChoice;
+        std::cin.ignore();
+
+        switch (adminChoice) {
+            case 1:
+                viewAllUsers();  
+                break;
+            case 2:
+                viewAllCarpools();  
+                break;
+            case 3:
+                removeUser();  
+                break;
+            case 4:
+                removeCarpool();  
+                break;
+            case 5:
+                std::cout << "Logging out of admin...\n";
+                mainMenu();  // Exit admin menu
+            default:
+                std::cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+
+void mainMenu()
+{
     while (true) {
         if (!isLoggedIn) {
             cout << "\n--- Carpooling Application ---\n";
@@ -35,9 +79,16 @@ int main() {
                     getline(cin, username);
                     cout << "Enter password: ";
                     getline(cin, password);
-
-                    isLoggedIn = user.login(username, password);
-                    break;
+                    if (username == adminUsername && password == adminPassword)
+                    {
+                        showAdminMenu();
+                        isLoggedIn=false;
+                    }
+                    else                    
+                    {
+                        isLoggedIn = user.login(username, password);
+                        break;
+                    }
                 
                 case 3:{
                     CarpoolManager* carpoolManager = CarpoolManager::getInstance();
@@ -48,7 +99,7 @@ int main() {
 
                 case 4:
                     cout << "Exiting...\n";
-                    return 0;
+                    exit(0);
 
                 default:
                     cout << "Invalid choice. Please try again.\n";
@@ -103,11 +154,18 @@ int main() {
 
                 case 7:
                     cout << "Exiting...\n";
-                    return 0;
+                    return;
 
                 default:
                     cout << "Invalid choice. Please try again.\n";
             }
         }
     }
+}
+
+
+
+int main() 
+{
+    mainMenu();
 }

@@ -1,4 +1,5 @@
 #include "carpool.h"
+#include "carpool_manager.h"
 #include <iostream>
 #include <fstream>
 
@@ -111,3 +112,45 @@ void Carpool::preloadCarpool(const std::string& driverUsername, const std::strin
     this->ratingCount = ratingCount;   
 }
 
+void viewAllCarpools() {
+    CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+    carpoolManager->loadCarpoolsFromFile();  // Load carpools from file
+
+    std::cout << "\n--- Listed Carpools ---\n";
+    const std::vector<Carpool*>& carpools = carpoolManager->getCarpoolListings();  // Get the carpool listings
+
+    if (carpools.empty()) {
+        std::cout << "No carpools are listed.\n";
+        return;
+    }
+
+    // Display all carpools
+    for (Carpool* carpool : carpools) {
+        carpool->displayCarpoolDetails();
+    }
+}
+
+void removeCarpool() {
+    std::string driverFullName;
+    std::cout << "Enter the driver’s full name for the carpool to remove: ";
+    std::getline(std::cin, driverFullName);
+
+    CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+    auto& carpools = carpoolManager->getCarpoolListings();  // Get the carpool listings
+
+    bool carpoolFound = false;
+
+    for (auto it = carpools.begin(); it != carpools.end(); ++it) {
+        if ((*it)->getDriverName() == driverFullName) {
+            delete *it;  // Free the memory
+            carpools.erase(it);  // Remove from the vector
+            std::cout << "Carpool for driver '" << driverFullName << "' removed successfully.\n";
+            carpoolFound = true;
+            break;
+        }
+    }
+
+    if (!carpoolFound) {
+        std::cout << "Carpool not found for driver '" << driverFullName << "'.\n";
+    }
+}

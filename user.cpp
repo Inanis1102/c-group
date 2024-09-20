@@ -1,11 +1,15 @@
 #include "user.h"
+#include "carpool_manager.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 // Constructor
 User::User() : fullName("Guest User"), creditPoints(0), ratingScore(-1), loggedIn(false) {}
+
+std::vector<User*> users;
 
 // Validate the password based on a simple policy
 bool User::isValidPassword(const std::string& password) {
@@ -231,6 +235,53 @@ void User::addDriverRating(int rating) {
         std::cout << "New rating score: " << ratingScore << " based on " << ratingCount << " ratings.\n";
     } else {
         std::cerr << "Invalid rating! Please provide a rating between 1 and 5.\n";
+    }
+}
+
+void viewAllUsers() {
+    CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+    carpoolManager->loadUsersFromFile();  // Load users from file
+
+    std::vector<User*>& users = carpoolManager->getUserList();  // Access the users list from the manager
+
+    std::cout << "\n--- Registered Users ---\n";
+    if (users.empty()) {
+        std::cout << "No users are registered.\n";
+        return;
+    }
+
+    // Display all users
+    for (User* user : users) {
+        user->viewProfile();  // Assuming viewProfile prints user details
+    }
+}
+
+
+void removeUser() 
+{
+    CarpoolManager* carpoolManager = CarpoolManager::getInstance();
+    carpoolManager->loadUsersFromFile();  // Ensure users are loaded from the file
+
+    std::string usernameToRemove;
+    std::cout << "Enter the username of the user to remove: ";
+    std::getline(std::cin, usernameToRemove);
+
+    std::vector<User*>& users = carpoolManager->getUserList();  // Access the users list from the manager
+
+    bool userFound = false;
+
+    for (auto it = users.begin(); it != users.end(); ++it) {
+        if ((*it)->getUsername() == usernameToRemove) {
+            delete *it;  // Free the memory
+            users.erase(it);  // Remove from the users vector
+            std::cout << "User '" << usernameToRemove << "' removed successfully.\n";
+            userFound = true;
+            break;
+        }
+    }
+
+    if (!userFound) {
+        std::cout << "User '" << usernameToRemove << "' not found.\n";
     }
 }
 

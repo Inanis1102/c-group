@@ -44,8 +44,11 @@ public:
     // Save carpool to text file for testing
     void saveCarpoolToFile() const;
 
-    // Load premade carpool from .txt
-    bool loadCarpoolsFromFile();
+    // View all carpools (for admin)
+    void viewAllCarpools();
+
+    // Remove carpool(for admin)
+    void removeCarpool();
 
     // Getters
     std::string getDriverName() const { return driverUsername; }
