@@ -1,4 +1,4 @@
-#include "Rating_System.h"
+#include "rating.h"
 #include <iostream>
 
 // Constructor to initialize rating system
