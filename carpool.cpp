@@ -3,7 +3,7 @@
 #include <fstream>
 
 // Constructor
-Carpool::Carpool() : availableSeats(0), contributionAmount(0), currentRating(0.0), ratingCount(0) {}
+Carpool::Carpool(): availableSeats(0), contributionAmount(0), currentRating(0.0), ratingCount(0) {};
 
 // Create a new carpool listing
 void Carpool::createCarpool(const std::string& driverUsername) {
@@ -70,38 +70,6 @@ void Carpool::displayCarpoolDetails() const {
     std::cout << "Current Rating: " << currentRating << " (based on " << ratingCount << " ratings)\n";  // Show ratings
 }
 
-//Load carpool from carpool.txt
-bool Carpool::loadCarpoolsFromFile() {
-    std::ifstream infile("carpool.txt");
-    if (!infile.is_open()) {
-        std::cerr << "Error opening carpool.txt for reading.\n";
-        return false;
-    }
-
-    std::string line;
-    while (std::getline(infile, line)) {
-        std::istringstream ss(line);
-        std::string driverUsername, departure, destination, date, model, color, plate;
-        int seats, contribution, ratingCount;
-        double rating;
-    
-        std::getline(ss, driverUsername, ",");
-        std::getline(ss, departure, ",");
-        std::getline(ss, destination, ",");
-        std::getline(ss, date, ",");
-        std::getline(ss, model, ",");
-        std::getline(ss, color, ",");
-        std::getline(ss, plate, ",");
-        ss >> seats >> contribution >> rating >> ratingCount;
-    
-        preloadCarpool(driverUsername, departure, destination, date, model, color, plate, seats, contribution, rating, ratingCount);
-    }
-
-    infile.close();
-    std::cout << "Carpools loaded from carpool.txt successfully.\n"
-    return true;
-}
-
 // Add a booking to the carpool
 bool Carpool::addBooking(const std::string& passengerUsername) {
     if (availableSeats > 0) {
@@ -126,6 +94,7 @@ void Carpool::addRating(int rating) {
     }
 }
 
+// Preload carpool from instance
 void Carpool::preloadCarpool(const std::string& driverUsername, const std::string& departure, const std::string& destination,
                              const std::string& date, const std::string& model, const std::string& color, const std::string& plate, 
                              int seats, int contribution, double rating, int ratingCount) {
@@ -138,7 +107,7 @@ void Carpool::preloadCarpool(const std::string& driverUsername, const std::strin
     this->vehiclePlateNumber = plate;
     this->availableSeats = seats;
     this->contributionAmount = contribution;
-    this->currentRating = rating;      // Load the current rating
-    this->ratingCount = ratingCount;   // Load the number of ratings
+    this->currentRating = rating;      
+    this->ratingCount = ratingCount;   
 }
 

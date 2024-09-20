@@ -23,14 +23,14 @@ public:
     std::vector<Booking*> bookings;  // Store bookings
 
     // Constructor
-    Carpool() : availableSeats(0), contributionAmount(0), currentRating(0.0), ratingCount(0) {};
+    Carpool();
     // Create a new carpool listing
     void createCarpool(const std::string& driverUsername);
 
     // Display the details of the carpool listing
     void displayCarpoolDetails() const;
 
-    // Preload carpool from text file
+    // Preload carpool from instance
     void preloadCarpool(const std::string& driverUsername, const std::string& departure, const std::string& destination,
                         const std::string& date, const std::string& model, const std::string& color, const std::string& plate, 
                         int seats, int contribution, double rating, int ratingCount);
@@ -40,6 +40,12 @@ public:
 
     // Add a rating for carpool
     void addRating(int rating);
+    
+    // Save carpool to text file for testing
+    void saveCarpoolToFile() const;
+
+    // Load premade carpool from .txt
+    bool loadCarpoolsFromFile();
 
     // Getters
     std::string getDriverName() const { return driverUsername; }

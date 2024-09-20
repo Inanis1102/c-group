@@ -73,11 +73,10 @@ void CarpoolManager::searchAndBookCarpool(User& user) {
         matchingCarpools[i]->displayCarpoolDetails();
         std::cout << "\n";
     }
-    std::cout << "\n";
 
     // Ask the user to choose a carpool
     int choice;
-    std::cout << "\nEnter the number of the carpool you want to book: ";
+    std::cout << "Enter the number of the carpool you want to book: ";
     std::cin >> choice;
     std::cin.ignore();  // Clear the input buffer
 
@@ -214,14 +213,13 @@ void CarpoolManager::loadCarpoolsFromFile() {
             continue;
         }
 
-        if (ss.peek() == ',') ss.ignore();  // Skip delimiter
-
+        if (ss.peek() == ',') ss.ignore();  
         if (!(ss >> contribution)) {
             std::cout << "Error: Failed to parse contribution. Skipping line.\n";
             continue;
         }
 
-        if (ss.peek() == ',') ss.ignore();  // Skip delimiter
+        if (ss.peek() == ',') ss.ignore(); 
 
         // Read rating and rating count from file
         if (!(ss >> rating)) {
@@ -229,7 +227,7 @@ void CarpoolManager::loadCarpoolsFromFile() {
             continue;
         }
 
-        if (ss.peek() == ',') ss.ignore();  // Skip delimiter
+        if (ss.peek() == ',') ss.ignore();  
 
         if (!(ss >> ratingCount)) {
             std::cout << "Error: Failed to parse rating count. Skipping line.\n";
@@ -250,23 +248,15 @@ void CarpoolManager::loadCarpoolsFromFile() {
 
 // method to search for driver with a certain name
 User* CarpoolManager::getDriverFullName(const std::string& fullName) {
-    std::cout << "Searching for driver full name: " << fullName << "|\n";
-    
+    loadUsersFromFile();
     for (User* user : users) {
         std::string userFullName = user->getFullName();
         
-        // Print both full names and their lengths
-        std::cout << "Comparing with user full name: '" << userFullName << "'|\n";
-        std::cout << "Length of fullName (from carpool): " << fullName.length() << "\n";
-        std::cout << "Length of userFullName (from user): " << userFullName.length() << "\n";
-        
         // Compare names after trimming spaces and ignoring case (if needed)
         if (trimSpaces(userFullName) == trimSpaces(fullName)) {
-            std::cout << "Driver found: " << user->getFullName() << "\n";
             return user;
         }
     }
-
     std::cout << "Driver not found for full name: " << fullName << "|\n";
     return nullptr;
 }

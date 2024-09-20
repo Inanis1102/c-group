@@ -5,7 +5,7 @@
 #include <string>
 
 // Constructor
-User::User() : creditPoints(0), ratingScore(-1), loggedIn(false) {}
+User::User() : fullName("Guest User"), creditPoints(0), ratingScore(-1), loggedIn(false) {}
 
 // Validate the password based on a simple policy
 bool User::isValidPassword(const std::string& password) {
